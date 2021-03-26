@@ -1,7 +1,9 @@
 plugins {
+    id 'java'
+    id 'maven'
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+    id "io.freefair.lombok" version "5.3.0"
 }
 
 group = 'com.yonatankarp'
@@ -10,10 +12,23 @@ sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+
+    maven {
+        name = "Rabbit Hole"
+        url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.key") ?: System.getenv('GITHUB_TOKEN')
+        }
+    }
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
+    implementation "com.yonatankarp:rabbit-hole:0.1.0"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
